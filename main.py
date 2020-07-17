@@ -12,23 +12,23 @@ from RCF.run_rcf import make_single_rcf
 
 if __name__ == '__main__':
 
-    img_dir = './data/'
+    img_dir = './data/general/'
     #img_list = os.listdir(img_dir)
-    with open('./data/test.lst', 'r') as f:
+    with open('./data/test_all.lst', 'r') as f:
         img_list = f.read().splitlines()
 
     edge_path = './edge/rcf/' # for saving edge result
 
     # ========================================== set scale attribute ==========================================
 
-    heightnum = 8
-    widthnum = 16
+    heightnum = 4
+    widthnum = 3
     enlarge = 2
     padding_size = 5
 
     # ========================================== crop into pieces ==========================================
     for file in img_list:
-        crop(heightnum, widthnum, file)
+        crop(heightnum, widthnum, img_dir, file)
 
     cropped_dir = './cropped/'
     cropped_list = os.listdir(cropped_dir)
@@ -60,4 +60,4 @@ if __name__ == '__main__':
 
     # ========================================== stitching back ==========================================
     stitch(heightnum, widthnum, enlarge, edge_path)
-    print(' ----- Stitch End ----- ')s
+    print(' ----- Stitch End ----- ')
