@@ -9,12 +9,36 @@ from CropandStitch import crop,stitch
 from RCF.run_rcf import make_single_rcf
 
 
+def enhance_filter(input):
+    # # LAB enhance
+    # lab = cv2.cvtColor(input, cv2.COLOR_BGR2LAB)
+    # lab_planes = cv2.split(lab)
+    # clahe = cv2.createCLAHE(clipLimit=2.0,tileGridSize=(3, 3))
+    # lab_planes[0] = clahe.apply(lab_planes[0])
+    # lab = cv2.merge(lab_planes)
+    # input = cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
+    
+    # BGR enhance
+    b,g,r = cv2.split(input)
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+    b = clahe.apply(b)
+    g = clahe.apply(g)
+    r = clahe.apply(r)
+    input = cv2.merge([b,g,r])
+
+    # # Filter
+    # # d=5 for real-time, 9 for offline application
+    # # two sigma values can be the same, < 10 won't have effect, > 150 make cartoonish image.
+    # input = cv2.bilateralFilter(input, d=9, sigmaColor=150, sigmaSpace=150)
+
+    return input
+
 
 if __name__ == '__main__':
 
     img_dir = './data/general/'
     #img_list = os.listdir(img_dir)
-    with open('./data/test_all.lst', 'r') as f:
+    with open('./data/test.lst', 'r') as f:
         img_list = f.read().splitlines()
 
     edge_path = './edge/rcf/' # for saving edge result
@@ -37,6 +61,7 @@ if __name__ == '__main__':
     for img in tqdm(cropped_list, total=len(cropped_list)):
         # print('------')
         input_image = cv2.imread(cropped_dir+img)
+        input_image = enhance_filter(input_image)
         # padding for elimating border
         pad_image = np.pad(input_image,((padding_size,padding_size),(padding_size,padding_size),(0,0)),'symmetric') 
         # print('input: ', input_image.shape)
