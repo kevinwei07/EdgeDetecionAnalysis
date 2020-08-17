@@ -2,3 +2,5 @@
 **.pth
 **.mat
 **.jpg
+data/test.lst
+img_manipulate.py
