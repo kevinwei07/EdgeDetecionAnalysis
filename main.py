@@ -1,4 +1,5 @@
 import os
+import shutil
 import cv2
 import numpy as np
 import torch
@@ -8,20 +9,20 @@ from ipdb import set_trace as pdb
 from CropandStitch import crop,stitch
 from RCF.run_rcf import make_single_rcf
 
-
+clean = True 
 
 if __name__ == '__main__':
 
     img_dir = './data/general/'
     #img_list = os.listdir(img_dir)
-    with open('./data/test_all.lst', 'r') as f:
+    with open('./data/test.lst', 'r') as f:
         img_list = f.read().splitlines()
 
     edge_path = './edge/rcf/' # for saving edge result
 
     # ========================================== set scale attribute ==========================================
 
-    heightnum = 4
+    heightnum = 2
     widthnum = 3
     enlarge = 2
     padding_size = 5
@@ -43,6 +44,10 @@ if __name__ == '__main__':
         large_image = cv2.resize(pad_image, (0,0), fx=enlarge, fy=enlarge)
         # print('large: ', large_image.shape)
         make_single_rcf(large_image, edge_path+'rcf_'+img, enlarge,padding_size)
+
+    if clean :
+        shutil.rmtree('./cropped/')  
+        os.mkdir('./cropped/')  
 
     print(' ----- RCF End ----- ')
     # ========================================== padding to eliminate border ==========================================
