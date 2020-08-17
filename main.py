@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     # ========================================== set scale attribute ==========================================
 
-    heightnum = 2
+    heightnum = 4
     widthnum = 3
     enlarge = 2
     padding_size = 5

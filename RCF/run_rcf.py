@@ -117,6 +117,8 @@ def make_single_rcf(image, edge_img_path, enlarge, padding_size):
     result = result.crop((padding_size, padding_size, result.size[0]-padding_size, result.size[1]-padding_size)) #(left,upper,right,low)
     result.save(edge_img_path)
 
+    return resize_factor
+
 
 if __name__ == '__main__':
     make_single_rcf('IMG_pigs1.png')
