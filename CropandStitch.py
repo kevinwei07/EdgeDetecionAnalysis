@@ -1,6 +1,7 @@
 from ipdb import set_trace as pdb
 import cv2
 import os
+import shutil
 import numpy as np
 
 def crop(h,w,img_dir,img_file):
@@ -48,6 +49,9 @@ def stitch(h,w,enlarge,img_path):
         final=np.concatenate(row_image,axis=0)
         print(picname,' final shape = ',final.shape)
         cv2.imwrite('./results/fulledge/'+picname+desc+'.jpg',final)
+
+    shutil.rmtree('./edge/rcf/')  
+    os.mkdir('./edge/rcf/')  
 
 # if __name__ == '__main__':
 
