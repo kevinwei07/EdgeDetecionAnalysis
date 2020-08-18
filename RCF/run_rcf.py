@@ -111,6 +111,11 @@ def make_single_rcf(image, edge_img_path, enlarge, padding_size):
             resize_factor *= 0.95
             print(resize_factor)
     result = torch.squeeze(results[-1].detach()).cpu().numpy()
+
+    kernel_size = enlarge + 2
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (kernel_size, kernel_size))
+    result = cv2.dilate(result, kernel)
+
     result = cv2.resize(result, (0, 0), fx=1/(resize_factor*enlarge), fy=1/(resize_factor*enlarge))
     # print('result: ', result.shape)
     result = Image.fromarray((result * 255).astype(np.uint8))
